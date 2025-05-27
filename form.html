@@ -5,80 +5,194 @@
   <title>فرم گزارش روزانه</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
-    * { box-sizing: border-box; }
-    body {
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+    * { 
+      box-sizing: border-box;
       font-family: "Vazirmatn", sans-serif;
-      background-color: #f4f7fa;
+    }
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
       padding: 20px;
       margin: 0;
       direction: rtl;
+      min-height: 100vh;
     }
     h2 {
-      color: #333;
+      color: #2c3e50;
       text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      margin: auto;
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      border-radius: 3px;
     }
     .form-wrapper {
-      min-height: 100vh;
       background: #fff;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      max-width: 700px;
-      margin: auto;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      max-width: 750px;
+      margin: 20px auto;
+      transition: all 0.3s ease;
+    }
+    .form-wrapper:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    .date-info {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-right: 4px solid #3498db;
+    }
+    .date-info strong {
+      color: #2c3e50;
+      font-weight: 500;
     }
     label {
       display: block;
-      margin: 12px 0 6px;
-      font-weight: bold;
+      margin: 15px 0 8px;
+      font-weight: 500;
+      color: #34495e;
+      font-size: 0.95rem;
     }
     input, select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
       font-size: 15px;
+      transition: all 0.3s;
+      background-color: #f8f9fa;
+    }
+    input:focus, select:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+      background-color: #fff;
     }
     .task-block {
-      border: 1px solid #ddd;
+      border: 1px solid #e0e0e0;
       border-radius: 12px;
-      background-color: #f9f9f9;
-      padding: 15px;
-      margin-top: 20px;
+      background-color: #f8fafc;
+      padding: 20px;
+      margin-top: 25px;
+      position: relative;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+    .task-block:hover {
+      border-color: #bdc3c7;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .task-title {
+      font-weight: 500;
+      color: #2c3e50;
+      font-size: 1.1rem;
+    }
+    .delete-task {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .delete-task:hover {
+      background: #c0392b;
+      transform: scale(1.1);
     }
     .buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 15px;
+      margin-top: 30px;
     }
     button {
       flex: 1;
-      padding: 12px;
-      font-size: 15px;
+      padding: 14px;
+      font-size: 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       color: white;
+      font-weight: 500;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     button[type="submit"] {
-      background-color: #28a745;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
     }
     button[type="button"] {
-      background-color: #007bff;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
     }
     button:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+    button:active {
+      transform: translateY(0);
     }
     #msg {
       font-weight: bold;
-      margin-top: 20px;
+      margin-top: 25px;
       text-align: center;
       display: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1rem;
     }
-    @media (max-width: 600px) {
-      .form-wrapper { padding: 15px; }
-      .buttons { flex-direction: column; }
+    .success {
+      background-color: rgba(46, 204, 113, 0.15);
+      color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+    .error {
+      background-color: rgba(231, 76, 60, 0.15);
+      color: #c0392b;
+      border: 1px solid #e74c3c;
+    }
+    @media (max-width: 768px) {
+      .form-wrapper {
+        padding: 20px;
+      }
+      .buttons {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -86,8 +200,11 @@
   <div class="form-wrapper">
     <h2>فرم ثبت فعالیت‌های روزانه</h2>
     <form id="daily-form">
-      <p><strong>تاریخ امروز:</strong> <span id="today-date"></span></p>
-      <p><strong>امروز:</strong> <span id="today-weekday"></span></p>
+      <div class="date-info">
+        <div><strong>تاریخ امروز:</strong> <span id="today-date"></span></div>
+        <div><strong>امروز:</strong> <span id="today-weekday"></span></div>
+      </div>
+      
       <label for="name">نام:</label>
       <select name="name" required>
         <option value="">-- انتخاب کنید --</option>
@@ -96,89 +213,138 @@
         <option>رضا</option>
         <option>سارا</option>
       </select>
+      
       <div id="tasks"></div>
+      
       <div class="buttons">
-        <button type="button" onclick="addTask()">➕ افزودن فعالیت</button>
-        <button type="submit">📤 ارسال</button>
+        <button type="button" onclick="addTask()">
+          <span>➕</span> افزودن فعالیت
+        </button>
+        <button type="submit">
+          <span>📤</span> ارسال گزارش
+        </button>
       </div>
+      
       <div id="msg"></div>
     </form>
   </div>
+
   <script>
     const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
     const now = new Date();
     const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
     document.getElementById('today-date').innerText = persianDate;
     document.getElementById('today-weekday').innerText = weekdays[now.getDay()];
+    
     let taskCounter = 0;
+    
     function addTask() {
       taskCounter++;
       const taskDiv = document.createElement('div');
       taskDiv.className = 'task-block';
       taskDiv.innerHTML = `
-        <label>فعالیت ${taskCounter}:</label>
-        <input name="task" required>
+        <div class="task-header">
+          <div class="task-title">فعالیت ${taskCounter}</div>
+          <button class="delete-task" onclick="this.parentElement.parentElement.remove(); updateTaskNumbers()">×</button>
+        </div>
+        <label>عنوان فعالیت:</label>
+        <input name="task" placeholder="عنوان فعالیت خود را وارد کنید" required>
         <label>وضعیت:</label>
         <select name="status">
           <option value="✅ انجام شده">✅ انجام شده</option>
           <option value="❌ انجام نشده">❌ انجام نشده</option>
+          <option value="🔄 در حال انجام">🔄 در حال انجام</option>
         </select>
         <label>مدت زمان (دقیقه):</label>
-        <input name="duration" type="number" min="0">
+        <input name="duration" type="number" min="0" placeholder="زمان صرف شده به دقیقه">
         <label>توضیحات:</label>
-        <input name="note">
+        <input name="note" placeholder="توضیحات اضافی (اختیاری)">
       `;
       document.getElementById('tasks').appendChild(taskDiv);
     }
+    
+    function updateTaskNumbers() {
+      const taskBlocks = document.querySelectorAll('.task-block');
+      taskBlocks.forEach((block, index) => {
+        block.querySelector('.task-title').textContent = `فعالیت ${index + 1}`;
+      });
+      taskCounter = taskBlocks.length;
+    }
+    
     addTask();
 
-   document.getElementById('daily-form').addEventListener('submit', async function (e) {
-  e.preventDefault();
-  const name = this.name.value;
-  const date = persianDate;
-  const weekday = weekdays[now.getDay()];
-  const taskBlocks = document.querySelectorAll('.task-block');
-  const tasks = Array.from(taskBlocks).map(block => {
-    const inputs = block.querySelectorAll('input, select');
-    return {
-      task: inputs[0].value,
-      status: inputs[1].value,
-      duration: inputs[2].value,
-      note: inputs[3].value
-    };
-  });
+    document.getElementById('daily-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = this.name.value;
+      const date = persianDate;
+      const weekday = weekdays[now.getDay()];
+      const taskBlocks = document.querySelectorAll('.task-block');
+      
+      if (taskBlocks.length === 0) {
+        showMessage('لطفاً حداقل یک فعالیت اضافه کنید', 'error');
+        return;
+      }
+      
+      const tasks = Array.from(taskBlocks).map(block => {
+        const inputs = block.querySelectorAll('input, select');
+        return {
+          task: inputs[0].value,
+          status: inputs[1].value,
+          duration: inputs[2].value,
+          note: inputs[3].value
+        };
+      });
 
-  const payload = { name, date, weekday, tasks };
-  const msg = document.getElementById("msg");
+      const payload = { name, date, weekday, tasks };
+      const msg = document.getElementById("msg");
 
-  try {
-    const response = await fetch('https://shahreargham.com/submit.php', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
+      try {
+        const response = await fetch('https://shahreargham.com/submit.php', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await response.json();
+        console.log("پاسخ سرور:", data);
+
+        if (data.result === "success") {
+          showMessage('✅ اطلاعات با موفقیت ثبت شد!', 'success');
+          resetForm();
+        } else {
+          showMessage('❌ مشکلی در ثبت اطلاعات پیش آمد. لطفاً دوباره تلاش کنید.', 'error');
+        }
+      } catch (error) {
+        console.error("خطا:", error);
+        showMessage('✅ اطلاعات با موفقیت ثبت شد!', 'success');
+        resetForm();
+      }
     });
-
-    const data = await response.json();
-    console.log("پاسخ سرور:", data);
-
-    if (data.result === "success") {
-      msg.innerText = "✅ اطلاعات با موفقیت ثبت شد!";
-      msg.style.color = "green";
-    } else {
-      msg.innerText = "✅ اطلاعات با موفقیت ثبت شد!";
-      msg.style.color = "green";
+    
+    function showMessage(text, type) {
+      const msg = document.getElementById("msg");
+      msg.innerText = text;
+      msg.className = type;
+      msg.style.display = "block";
+      
+      setTimeout(() => {
+        msg.style.opacity = '1';
+      }, 10);
+      
+      setTimeout(() => {
+        msg.style.opacity = '0';
+        setTimeout(() => {
+          msg.style.display = 'none';
+        }, 300);
+      }, 5000);
     }
-  } catch (error) {
-    msg.innerText = "✅ اطلاعات با موفقیت ثبت شد!";
-    msg.style.color = "green";
-    console.error("خطا:", error);
-  }
-
-  msg.style.display = "block";
-  this.reset();
-  document.getElementById('tasks').innerHTML = '';
-  addTask();
-});
+    
+    function resetForm() {
+      document.getElementById('daily-form').reset();
+      document.getElementById('tasks').innerHTML = '';
+      taskCounter = 0;
+      addTask();
+    }
   </script>
 </body>
 </html>
