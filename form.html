@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>فرم گزارش روزانه</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Vazirmatn", sans-serif;
+      background-color: #f4f7fa;
+      padding: 20px;
+      margin: 0;
+      direction: rtl;
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+    .form-wrapper {
+      min-height: 100vh;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      max-width: 700px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .task-block {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      flex: 1;
+      padding: 12px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+    button[type="submit"] {
+      background-color: #28a745;
+    }
+    button[type="button"] {
+      background-color: #007bff;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    #msg {
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .form-wrapper { padding: 15px; }
+      .buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-wrapper">
+    <h2>فرم ثبت فعالیت‌های روزانه</h2>
+    <form id="daily-form">
+      <p><strong>تاریخ امروز:</strong> <span id="today-date"></span></p>
+      <p><strong>امروز:</strong> <span id="today-weekday"></span></p>
+      <label for="name">نام:</label>
+      <select name="name" required>
+        <option value="">-- انتخاب کنید --</option>
+        <option>علی</option>
+        <option>نسرین</option>
+        <option>رضا</option>
+        <option>سارا</option>
+      </select>
+      <div id="tasks"></div>
+      <div class="buttons">
+        <button type="button" onclick="addTask()">➕ افزودن فعالیت</button>
+        <button type="submit">📤 ارسال</button>
+      </div>
+      <div id="msg"></div>
+    </form>
+  </div>
+  <script>
+    const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
+    const now = new Date();
+    const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
+    document.getElementById('today-date').innerText = persianDate;
+    document.getElementById('today-weekday').innerText = weekdays[now.getDay()];
+    let taskCounter = 0;
+    function addTask() {
+      taskCounter++;
+      const taskDiv = document.createElement('div');
+      taskDiv.className = 'task-block';
+      taskDiv.innerHTML = `
+        <label>فعالیت ${taskCounter}:</label>
+        <input name="task" required>
+        <label>وضعیت:</label>
+        <select name="status">
+          <option value="✅ انجام شده">✅ انجام شده</option>
+          <option value="❌ انجام نشده">❌ انجام نشده</option>
+        </select>
+        <label>مدت زمان (دقیقه):</label>
+        <input name="duration" type="number" min="0">
+        <label>توضیحات:</label>
+        <input name="note">
+      `;
+      document.getElementById('tasks').appendChild(taskDiv);
+    }
+    addTask();
+    document.getElementById('daily-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name = this.name.value;
+      const date = persianDate;
+      const weekday = weekdays[now.getDay()];
+      const taskBlocks = document.querySelectorAll('.task-block');
+      const tasks = Array.from(taskBlocks).map(block => {
+        const inputs = block.querySelectorAll('input, select');
+        return {
+          task: inputs[0].value,
+          status: inputs[1].value,
+          duration: inputs[2].value,
+          note: inputs[3].value
+        };
+      });
+      const payload = { name, date, weekday, tasks };
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzMad1OUkn5kBUKc3qSvHqMkbmy5Zq3K9ecH7fdThKu42AF1WeGzfAZPFf4Itu-NgtZ/exec', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const msg = document.getElementById("msg");
+        if (response.ok) {
+          msg.innerText = "✅ اطلاعات با موفقیت ثبت شد!";
+          msg.style.color = "green";
+        } else {
+          msg.innerText = "❌ خطا در ارسال اطلاعات!";
+          msg.style.color = "red";
+        }
+        msg.style.display = "block";
+        this.reset();
+        document.getElementById('tasks').innerHTML = '';
+        addTask();
+      } catch (error) {
+        const msg = document.getElementById("msg");
+        msg.innerText = "❌ خطا در ارسال اطلاعات!";
+        msg.style.color = "red";
+        msg.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
