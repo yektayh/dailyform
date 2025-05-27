@@ -55,9 +55,6 @@
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-right: 4px solid #3498db;
     }
     .date-info strong {
@@ -92,41 +89,17 @@
       background-color: #f8fafc;
       padding: 20px;
       margin-top: 25px;
-      position: relative;
       transition: all 0.3s;
-      overflow: hidden;
     }
     .task-block:hover {
       border-color: #bdc3c7;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
     .task-title {
       font-weight: 500;
       color: #2c3e50;
       font-size: 1.1rem;
-    }
-    .delete-task {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .delete-task:hover {
-      background: #c0392b;
-      transform: scale(1.1);
+      margin-bottom: 15px;
     }
     .buttons {
       display: flex;
@@ -149,13 +122,18 @@
       justify-content: center;
       gap: 8px;
     }
-    button[type="submit"] {
-      background: linear-gradient(135deg, #2ecc71, #27ae60);
-      box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
-    }
-    button[type="button"] {
+    .add-btn {
       background: linear-gradient(135deg, #3498db, #2980b9);
       box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+    .delete-btn {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    }
+    .submit-btn {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+      width: 100%;
     }
     button:hover {
       transform: translateY(-2px);
@@ -202,7 +180,6 @@
     <form id="daily-form">
       <div class="date-info">
         <div><strong>تاریخ امروز:</strong> <span id="today-date"></span></div>
-        <div><strong>امروز:</strong> <span id="today-weekday"></span></div>
       </div>
       
       <label for="name">نام:</label>
@@ -217,24 +194,31 @@
       <div id="tasks"></div>
       
       <div class="buttons">
-        <button type="button" onclick="addTask()">
+        <button type="button" class="add-btn" onclick="addTask()">
           <span>➕</span> افزودن فعالیت
         </button>
-        <button type="submit">
-          <span>📤</span> ارسال گزارش
+        <button type="button" class="delete-btn" onclick="removeTask()">
+          <span>❌</span> حذف فعالیت
         </button>
       </div>
+      
+      <button type="submit" class="submit-btn">
+        <span>📤</span> ارسال گزارش
+      </button>
       
       <div id="msg"></div>
     </form>
   </div>
 
   <script>
-    const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
     const now = new Date();
-    const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
+    const persianDate = new Intl.DateTimeFormat('fa-IR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(now);
+    
     document.getElementById('today-date').innerText = persianDate;
-    document.getElementById('today-weekday').innerText = weekdays[now.getDay()];
     
     let taskCounter = 0;
     
@@ -243,10 +227,7 @@
       const taskDiv = document.createElement('div');
       taskDiv.className = 'task-block';
       taskDiv.innerHTML = `
-        <div class="task-header">
-          <div class="task-title">فعالیت ${taskCounter}</div>
-          <button class="delete-task" onclick="this.parentElement.parentElement.remove(); updateTaskNumbers()">×</button>
-        </div>
+        <div class="task-title">فعالیت ${taskCounter}</div>
         <label>عنوان فعالیت:</label>
         <input name="task" placeholder="عنوان فعالیت خود را وارد کنید" required>
         <label>وضعیت:</label>
@@ -263,21 +244,20 @@
       document.getElementById('tasks').appendChild(taskDiv);
     }
     
-    function updateTaskNumbers() {
-      const taskBlocks = document.querySelectorAll('.task-block');
-      taskBlocks.forEach((block, index) => {
-        block.querySelector('.task-title').textContent = `فعالیت ${index + 1}`;
-      });
-      taskCounter = taskBlocks.length;
+    function removeTask() {
+      const tasks = document.getElementById('tasks');
+      if (tasks.children.length > 0) {
+        tasks.removeChild(tasks.lastChild);
+        taskCounter--;
+      } else {
+        showMessage('هیچ فعالیتی برای حذف وجود ندارد', 'error');
+      }
     }
     
-    addTask();
-
     document.getElementById('daily-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const name = this.name.value;
       const date = persianDate;
-      const weekday = weekdays[now.getDay()];
       const taskBlocks = document.querySelectorAll('.task-block');
       
       if (taskBlocks.length === 0) {
@@ -295,7 +275,7 @@
         };
       });
 
-      const payload = { name, date, weekday, tasks };
+      const payload = { name, date, tasks };
       const msg = document.getElementById("msg");
 
       try {
@@ -343,8 +323,10 @@
       document.getElementById('daily-form').reset();
       document.getElementById('tasks').innerHTML = '';
       taskCounter = 0;
-      addTask();
     }
+    
+    // اضافه کردن یک فعالیت به صورت پیش‌فرض
+    addTask();
   </script>
 </body>
 </html>
