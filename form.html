@@ -10,13 +10,22 @@
       box-sizing: border-box;
       font-family: "Vazirmatn", sans-serif;
     }
-    body {
-      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-      padding: 20px;
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100vh;
       direction: rtl;
-      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
     }
+
+    .form-wrapper {
+      width: 100%;
+      height: 100vh;
+      padding: 30px;
+      background: #fff;
+      overflow-y: auto;
+    }
+
     h2 {
       color: #2c3e50;
       text-align: center;
@@ -26,6 +35,7 @@
       position: relative;
       padding-bottom: 15px;
     }
+
     h2:after {
       content: '';
       position: absolute;
@@ -38,18 +48,7 @@
       background: linear-gradient(90deg, #3498db, #2ecc71);
       border-radius: 3px;
     }
-    .form-wrapper {
-      background: #fff;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      max-width: 750px;
-      margin: 20px auto;
-      transition: all 0.3s ease;
-    }
-    .form-wrapper:hover {
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-    }
+
     .date-info {
       background: #f8f9fa;
       padding: 15px;
@@ -57,10 +56,12 @@
       margin-bottom: 20px;
       border-right: 4px solid #3498db;
     }
+
     .date-info strong {
       color: #2c3e50;
       font-weight: 500;
     }
+
     label {
       display: block;
       margin: 15px 0 8px;
@@ -68,6 +69,7 @@
       color: #34495e;
       font-size: 0.95rem;
     }
+
     input, select {
       width: 100%;
       padding: 12px 15px;
@@ -77,12 +79,14 @@
       transition: all 0.3s;
       background-color: #f8f9fa;
     }
+
     input:focus, select:focus {
       border-color: #3498db;
       box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
       outline: none;
       background-color: #fff;
     }
+
     .task-block {
       border: 1px solid #e0e0e0;
       border-radius: 12px;
@@ -91,22 +95,26 @@
       margin-top: 25px;
       transition: all 0.3s;
     }
+
     .task-block:hover {
       border-color: #bdc3c7;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
+
     .task-title {
       font-weight: 500;
       color: #2c3e50;
       font-size: 1.1rem;
       margin-bottom: 15px;
     }
+
     .buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-top: 30px;
     }
+
     button {
       flex: 1;
       padding: 14px;
@@ -122,26 +130,32 @@
       justify-content: center;
       gap: 8px;
     }
+
     .add-btn {
       background: linear-gradient(135deg, #3498db, #2980b9);
       box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
     }
+
     .delete-btn {
       background: linear-gradient(135deg, #e74c3c, #c0392b);
       box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
     }
+
     .submit-btn {
       background: linear-gradient(135deg, #2ecc71, #27ae60);
       box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
       width: 100%;
     }
+
     button:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
+
     button:active {
       transform: translateY(0);
     }
+
     #msg {
       font-weight: bold;
       margin-top: 25px;
@@ -151,20 +165,20 @@
       border-radius: 10px;
       font-size: 1rem;
     }
+
     .success {
       background-color: rgba(46, 204, 113, 0.15);
       color: #27ae60;
       border: 1px solid #2ecc71;
     }
+
     .error {
       background-color: rgba(231, 76, 60, 0.15);
       color: #c0392b;
       border: 1px solid #e74c3c;
     }
+
     @media (max-width: 768px) {
-      .form-wrapper {
-        padding: 20px;
-      }
       .buttons {
         flex-direction: column;
       }
@@ -181,7 +195,7 @@
       <div class="date-info">
         <div><strong>تاریخ امروز:</strong> <span id="today-date"></span></div>
       </div>
-      
+
       <label for="name">نام:</label>
       <select name="name" required>
         <option value="">-- انتخاب کنید --</option>
@@ -196,9 +210,9 @@
         <option>ندا شاهورانی</option>
         <option>بهنام یحیایی</option>
       </select>
-      
+
       <div id="tasks"></div>
-      
+
       <div class="buttons">
         <button type="button" class="add-btn" onclick="addTask()">
           <span>➕</span> افزودن فعالیت
@@ -206,25 +220,22 @@
         <button type="button" class="delete-btn" onclick="removeTask()">
           <span>❌</span> حذف فعالیت
         </button>
-          <button type="submit" class="submit-btn">
-        <span>📤</span> ارسال گزارش
-      </button>
+        <button type="submit" class="submit-btn">
+          <span>📤</span> ارسال گزارش
+        </button>
       </div>
-      
-    
-      
+
       <div id="msg"></div>
     </form>
   </div>
 
   <script>
-   const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
+    const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
     const now = new Date();
     const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
     document.getElementById('today-date').innerText = persianDate;
-    document.getElementById('today-weekday').innerText = weekdays[now.getDay()];
     let taskCounter = 0;
-    
+
     function addTask() {
       taskCounter++;
       const taskDiv = document.createElement('div');
@@ -246,7 +257,7 @@
       `;
       document.getElementById('tasks').appendChild(taskDiv);
     }
-    
+
     function removeTask() {
       const tasks = document.getElementById('tasks');
       if (tasks.children.length > 0) {
@@ -256,18 +267,18 @@
         showMessage('هیچ فعالیتی برای حذف وجود ندارد', 'error');
       }
     }
-    
+
     document.getElementById('daily-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const name = this.name.value;
       const date = persianDate;
       const taskBlocks = document.querySelectorAll('.task-block');
-      
+
       if (taskBlocks.length === 0) {
         showMessage('لطفاً حداقل یک فعالیت اضافه کنید', 'error');
         return;
       }
-      
+
       const tasks = Array.from(taskBlocks).map(block => {
         const inputs = block.querySelectorAll('input, select');
         return {
@@ -279,7 +290,6 @@
       });
 
       const payload = { name, date, tasks };
-      const msg = document.getElementById("msg");
 
       try {
         const response = await fetch('https://shahreargham.com/submit.php', {
@@ -289,8 +299,6 @@
         });
 
         const data = await response.json();
-        console.log("پاسخ سرور:", data);
-
         if (data.result === "success") {
           showMessage('✅ اطلاعات با موفقیت ثبت شد!', 'success');
           resetForm();
@@ -303,17 +311,15 @@
         resetForm();
       }
     });
-    
+
     function showMessage(text, type) {
       const msg = document.getElementById("msg");
       msg.innerText = text;
       msg.className = type;
       msg.style.display = "block";
-      
       setTimeout(() => {
         msg.style.opacity = '1';
       }, 10);
-      
       setTimeout(() => {
         msg.style.opacity = '0';
         setTimeout(() => {
@@ -321,14 +327,14 @@
         }, 300);
       }, 5000);
     }
-    
+
     function resetForm() {
       document.getElementById('daily-form').reset();
       document.getElementById('tasks').innerHTML = '';
       taskCounter = 0;
     }
-    
-    // اضافه کردن یک فعالیت به صورت پیش‌فرض
+
+    // شروع با یک فعالیت پیش‌فرض
     addTask();
   </script>
 </body>
