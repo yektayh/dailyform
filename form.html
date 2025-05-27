@@ -218,15 +218,11 @@
   </div>
 
   <script>
+   const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
     const now = new Date();
-    const persianDate = new Intl.DateTimeFormat('fa-IR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(now);
-    
+    const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
     document.getElementById('today-date').innerText = persianDate;
-    
+    document.getElementById('today-weekday').innerText = weekdays[now.getDay()];
     let taskCounter = 0;
     
     function addTask() {
