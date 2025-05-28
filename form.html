@@ -232,8 +232,26 @@
   <script>
     const weekdays = ['یک‌شنبه', 'دو‌شنبه', 'سه‌شنبه', 'چهار‌شنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
     const now = new Date();
-    const persianDate = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { dateStyle: 'full' }).format(now);
-    document.getElementById('today-date').innerText = persianDate;
+
+// گرفتن بخش‌های تاریخ شمسی با اعداد فارسی
+const parts = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit'
+}).formatToParts(now);
+
+// استخراج سال، ماه، روز
+const year = parts.find(p => p.type === 'year').value;
+const month = parts.find(p => p.type === 'month').value;
+const day = parts.find(p => p.type === 'day').value;
+
+// تابع برای تبدیل اعداد فارسی به انگلیسی
+function toEnglishDigits(str) {
+  return str.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+}
+
+// نمایش تاریخ شمسی فقط عددی و انگلیسی
+document.getElementById('today-date').innerText = ${toEnglishDigits(year)}/${toEnglishDigits(month)}/${toEnglishDigits(day)}
     let taskCounter = 0;
 
     function addTask() {
