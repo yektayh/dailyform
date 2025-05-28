@@ -6,87 +6,245 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
-    * { box-sizing: border-box; font-family: "Vazirmatn", sans-serif; }
+    * { 
+      box-sizing: border-box; 
+      font-family: "Vazirmatn", sans-serif; 
+    }
+    
     html, body {
-      margin: 0; padding: 0; height: 100vh; direction: rtl;
+      margin: 0; 
+      padding: 0; 
+      height: 100vh; 
+      direction: rtl;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
     }
+    
     .form-wrapper {
-      width: 100%; height: 100vh; padding: 30px; background: #fff; overflow-y: auto;
+      width: 100%; 
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 25px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
     }
+    
     h2 {
-      color: #2c3e50; text-align: center; margin-bottom: 25px;
-      font-weight: 700; font-size: 1.8rem; position: relative; padding-bottom: 15px;
+      color: #2c3e50; 
+      text-align: center; 
+      margin-bottom: 25px;
+      font-weight: 700; 
+      font-size: 1.8rem; 
+      position: relative; 
+      padding-bottom: 15px;
     }
+    
     h2:after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; margin: auto;
-      width: 80px; height: 3px; background: linear-gradient(90deg, #3498db, #2ecc71); border-radius: 3px;
+      content: ''; 
+      position: absolute; 
+      bottom: 0; 
+      left: 0; 
+      right: 0; 
+      margin: auto;
+      width: 80px; 
+      height: 3px; 
+      background: linear-gradient(90deg, #3498db, #2ecc71); 
+      border-radius: 3px;
     }
+    
     .date-info {
-      background: #f8f9fa; padding: 15px; border-radius: 10px;
-      margin-bottom: 20px; border-right: 4px solid #3498db;
+      background: #f8f9fa; 
+      padding: 15px; 
+      border-radius: 10px;
+      margin-bottom: 20px; 
+      border-right: 4px solid #3498db;
+      text-align: center;
     }
-    .date-info strong { color: #2c3e50; font-weight: 500; }
+    
+    .date-info strong { 
+      color: #2c3e50; 
+      font-weight: 500; 
+    }
+    
     label {
-      display: block; margin: 15px 0 8px; font-weight: 500;
-      color: #34495e; font-size: 0.95rem;
+      display: block; 
+      margin: 12px 0 6px; 
+      font-weight: 500;
+      color: #34495e; 
+      font-size: 0.9rem;
     }
+    
     input, select {
-      width: 100%; padding: 12px 15px; border: 1px solid #ddd;
-      border-radius: 10px; font-size: 15px; background-color: #f8f9fa;
+      width: 100%; 
+      padding: 10px 12px; 
+      border: 1px solid #ddd;
+      border-radius: 8px; 
+      font-size: 14px; 
+      background-color: #fff;
       transition: all 0.3s;
     }
+    
     input:focus, select:focus {
-      border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-      outline: none; background-color: #fff;
+      border-color: #3498db; 
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
     }
+    
+    /* استایل بخش فعالیت‌ها */
+    #tasks {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 15px 5px;
+      margin: 20px 0;
+      scrollbar-width: thin;
+    }
+    
     .task-block {
-      border: 1px solid #e0e0e0; border-radius: 12px; background-color: #f8fafc;
-      padding: 20px; margin-top: 25px;
+      min-width: 260px;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      background-color: #fff;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
     }
-    .task-title { font-weight: 500; color: #2c3e50; font-size: 1.1rem; margin-bottom: 15px; }
+    
+    .task-block:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .task-title {
+      font-weight: 600;
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      text-align: center;
+      background: linear-gradient(135deg, #3498db, #2ecc71);
+      padding: 8px;
+      border-radius: 8px;
+      margin: -15px -15px 15px -15px;
+    }
+    
+    /* استایل دکمه‌ها */
     .buttons {
-      display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 25px;
+      justify-content: center;
     }
+    
     button {
-      flex: 1; padding: 14px; font-size: 16px; border: none;
-      border-radius: 10px; cursor: pointer; color: white; font-weight: 500;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-width: 160px;
+      padding: 12px 20px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       transition: all 0.3s;
     }
+    
     .add-btn {
       background: linear-gradient(135deg, #3498db, #2980b9);
-      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+      box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
     }
+    
     .delete-btn {
       background: linear-gradient(135deg, #e74c3c, #c0392b);
-      box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+      box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
     }
+    
     .submit-btn {
       background: linear-gradient(135deg, #2ecc71, #27ae60);
-      box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+      box-shadow: 0 3px 8px rgba(46, 204, 113, 0.3);
       width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
     }
+    
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
-    button:active { transform: translateY(0); }
+    
+    button:active { 
+      transform: translateY(0); 
+    }
+    
+    /* پیام‌های سیستم */
     #msg {
-      font-weight: bold; margin-top: 25px; text-align: center;
-      display: none; padding: 15px; border-radius: 10px; font-size: 1rem;
+      font-weight: bold;
+      margin-top: 25px;
+      text-align: center;
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      transition: all 0.3s;
     }
+    
     .success {
       background-color: rgba(46, 204, 113, 0.15);
-      color: #27ae60; border: 1px solid #2ecc71;
+      color: #27ae60;
+      border: 1px solid #2ecc71;
     }
+    
     .error {
       background-color: rgba(231, 76, 60, 0.15);
-      color: #c0392b; border: 1px solid #e74c3c;
+      color: #c0392b;
+      border: 1px solid #e74c3c;
     }
+    
+    /* اسکرول بار زیبا */
+    #tasks::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    #tasks::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+    
+    #tasks::-webkit-scrollbar-thumb {
+      background: #3498db;
+      border-radius: 3px;
+    }
+    
+    #tasks::-webkit-scrollbar-thumb:hover {
+      background: #2980b9;
+    }
+    
+    /* رسپانسیو */
     @media (max-width: 768px) {
-      .buttons { flex-direction: column; }
-      button { width: 100%; }
+      .form-wrapper {
+        padding: 20px;
+        margin: 10px;
+        width: auto;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      .task-block {
+        min-width: 220px;
+      }
     }
   </style>
 </head>
@@ -165,7 +323,7 @@
       taskDiv.innerHTML = `
         <div class="task-title">فعالیت ${taskCounter}</div>
         <label>عنوان فعالیت:</label>
-        <input name="task" placeholder="عنوان فعالیت خود را وارد کنید" required>
+        <input name="task" placeholder="عنوان فعالیت" required>
         <label>وضعیت:</label>
         <select name="status">
           <option value="✅ انجام شده">✅ انجام شده</option>
@@ -173,11 +331,17 @@
           <option value="🔄 در حال انجام">🔄 در حال انجام</option>
         </select>
         <label>مدت زمان (دقیقه):</label>
-        <input name="duration" type="number" min="0" placeholder="زمان صرف شده به دقیقه">
+        <input name="duration" type="number" min="0" placeholder="زمان انجام">
         <label>توضیحات:</label>
-        <input name="note" placeholder="توضیحات اضافی (اختیاری)">
+        <input name="note" placeholder="توضیحات اضافی">
       `;
       document.getElementById('tasks').appendChild(taskDiv);
+      
+      // اسکرول به آخرین فعالیت اضافه شده
+      document.getElementById('tasks').scrollTo({
+        left: document.getElementById('tasks').scrollWidth,
+        behavior: 'smooth'
+      });
     }
 
     function removeTask() {
@@ -240,9 +404,8 @@
       msg.innerText = text;
       msg.className = type;
       msg.style.display = "block";
-      setTimeout(() => {
-        msg.style.opacity = '1';
-      }, 10);
+      msg.style.opacity = '1';
+      
       setTimeout(() => {
         msg.style.opacity = '0';
         setTimeout(() => {
@@ -255,8 +418,11 @@
       document.getElementById('daily-form').reset();
       document.getElementById('tasks').innerHTML = '';
       taskCounter = 0;
+      // اضافه کردن یک فعالیت خالی پس از ریست
+      addTask();
     }
 
+    // اضافه کردن اولین فعالیت هنگام لود صفحه
     addTask();
   </script>
 </body>
